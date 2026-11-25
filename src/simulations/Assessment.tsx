@@ -1,0 +1,9 @@
+import {useState} from 'react';
+import {motion} from 'motion/react';
+import {RotateCcw} from 'lucide-react';
+const criteria=[{label:'Compreensão + fundamentos',description:'Explicou o problema e demonstrou domínio.',points:30},{label:'Planejamento + agentes',description:'Especificou e registrou as decisões.',points:20},{label:'Qualidade + validação',description:'Apresentou testes e revisão de segurança.',points:30},{label:'Valor + defesa técnica',description:'Mediu o impacto e defendeu a solução.',points:20}];
+export function Assessment(){
+ const [checked,setChecked]=useState([false,false,false,false]);
+ const score=criteria.reduce((total,item,i)=>total+(checked[i]?item.points:0),0);
+ return <div className="score-layout"><div className="score-panel"><div className="score-ring enhanced-ring"><svg viewBox="0 0 120 120" className="score-svg" aria-hidden="true"><circle cx="60" cy="60" r="53" stroke="#ffffff25" strokeWidth="8" fill="none"/><motion.circle cx="60" cy="60" r="53" stroke="#deff75" strokeWidth="8" fill="none" strokeLinecap="round" transform="rotate(-90 60 60)" initial={false} animate={{pathLength:score/100}} transition={{duration:.4}}/></svg><div className="score-center"><span className="score-num" aria-live="polite">{score}</span><small>/ 100 pontos</small></div></div><p>Rubrica ilustrativa.<br/>O processo vale tanto quanto a entrega.</p></div><div className="score-items">{criteria.map((c,i)=><motion.label key={c.label} className="score-item" whileTap={{scale:.985}}><input type="checkbox" checked={checked[i]} onChange={e=>setChecked(prev=>prev.map((v,j)=>j===i?e.target.checked:v))}/><span><b>{c.label}</b><small>{c.description}</small></span><span className="pts">{c.points} pts</span></motion.label>)}<button type="button" className="light-reset" onClick={()=>setChecked(criteria.map(()=>false))}><RotateCcw size={16}/> Reiniciar avaliação</button></div></div>;
+}
